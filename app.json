@@ -1,0 +1,12 @@
+{
+  "name": "GutenbergProject",
+  "displayName": "GutenbergProject",
+  "expo": {
+    "name": "GutenbergProject",
+    "slug": "GutenbergProject",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
