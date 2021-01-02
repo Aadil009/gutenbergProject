@@ -1,20 +1,36 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 
 // import { Container } from './styles';
 
 const BookCard = (props) => {
+    const url = props.url
+
+    openeUrlInWebBrowser= ()=>{
+        if(!url){
+            return (Alert.alert(
+                "URL Not Found",
+                "Try Different Books",
+              ))
+        }
+        else{
+            Linking.openURL(url)
+        }
+    }
+    
     return (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={openeUrlInWebBrowser} >
             
             <Image
             style={{height:100,width:80,borderRadius:8,top:5}}
-                source={{ uri: 'http://www.gutenberg.org/cache/epub/74/pg74.cover.medium.jpg' }}
+                source={{ uri: props.uri }}
             />
             <View style={{top:5}}>
             <Text numberOfLines={2} style={{fontSize:12,color:'black',flexWrap:'wrap'}}>{props.title}</Text>
+            <Text numberOfLines={2} style={{fontSize:12,color:'black',flexWrap:'wrap'}}>{props.author}</Text>
+
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
