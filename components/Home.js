@@ -28,21 +28,22 @@ export default class Home extends Component {
     }
 
     apiRequest = async (genres) => {
-        let tempGenres = genres
-        await this.waitBeforeFetch(tempGenres)
-
-        this.props.navigation.navigate('Details', { genres: tempGenres, data: this.state.data })
+        // let tempGenres = genres
+        // await this.waitBeforeFetch(tempGenres),
+        console.log("***********************")
+        
+            this.props.navigation.navigate('Details', { genres: tempGenres, data: this.state.data })
     }
 
 
     waitBeforeFetch = async (tempGenres) => {
-        this.setState({
+        this.setstate({
             loading: true
         })
         await fetch(`http://skunkworks.ignitesol.com:8000/books?search=${tempGenres}`)
             .then((response) => response.json())
             .then((responsesJson) => {
-                this.setState({ data: [...this.state.data, ...responsesJson.results], loading: false })
+                this.setState({ data: [...this.state.data, ...responsesJson.results],loading:false })
                 // setTimeout(() => {
                 //     this.setState({
                 //         loading: false,
@@ -59,8 +60,9 @@ export default class Home extends Component {
         let GenreCards = this.state.genres.map((genres, key) => {
             return (
                 <TouchableHighlight key={key} onPress={() => {
-                    this.apiRequest(genres)
-                    this.props.navigation.navigate('Details', { genres: genres, data: this.state.data })
+                    
+                    // this.apiRequest(genres)
+                    this.props.navigation.navigate('Details', { genres: genres })
                 }} >
                     <GenreCard genres={genres} />
 

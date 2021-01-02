@@ -9,66 +9,88 @@ import Loader from './Loader'
 // *********************************************
 // **************************************
 export default class Details extends Component {
-
+    
     _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
             text: '',
             page: 1,
-            data: [],
-            isLoading: true,
+            data:[],
+            isLoading:true,
             loading: false,
-            next:''
 
         };
     }
-    componentDidMount() {
-        this.apiRequest()
-    }
-    apiRequest = async () => {
-        try {
-            const response = await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${this.props.route.params.genres}`)
-            const json = await response.json();
-
-
-            this.setState({ data: [...this.state.data, ...json.results] ,next:json.next})
-            
-        }
-        catch (err) {
-            console.log(err)
-        }
-
-    }
-
-    handleMore = async () => {
-        // setTimeout(()=>{
-        if (this.state.next != null) {
-            console.log("***********&&&&&&&&&&&",this.state.next)
-            await this.setState({
-                page: this.state.page + 1
-            }, () => {
-                this.apiRequest()
-            })
-        }
+    componentDidMount(){
         
-        // })},2000)
+        this.apiRequest(this.props.route.params.genres)
+    }
+    apiRequest = async(genres)=>{
+        const response = await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${1}&search=${genres}`)
+        const json  = await response.json();
+        console.log('HEREE IS SOMETHING GOING WRONG')
+        this.setState({data: [...this.state.data, responsesJson.results],loading:false,isLoading:false}) 
+        // await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${genres}`)
+        //     .then((response) => response.json())
+        //     .then((responsesJson) =>{
+        //         console.log("hellowtherej*****************8")
+        //          this.setState({data: [...this.state.data, responsesJson.results],loading:false}) 
+        //     })
+        //     .catch((error) => console.error(error))
+        //     .finally(() => this.setState({ isLoading: false }))
     }
 
-    ItemView = ({ item }) => {
-        return (
-            // Flat List Item
-            <Text>
-                {item.title}
+    handleMore = (genres) => {
+        this.setState({
+            page: this.state.page + 1
+        }, () => {
+            this.apiRequest(genres)
+        })
+    }
+    // componentDidMount() {
+    //     this._isMounted = true;
+      
+    //     fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${this.props.route.params.genres}`)
+    //         .then((response) => response.json())
+    //         .then((responsesJson) =>{
+    //             if(this._isMounted){
+    //              this.setState({data: [...this.state.data, responsesJson.results],loading:false}) 
+    //         }})
+    //         .catch((error) => console.error(error))
+          
+        
+    //   }
+    // // componentDidMount(){
+    // //     this.setState({
+    // //         data:this.props.route.params.data
+    // //     })
+    // // }
 
-            </Text>
-        );
-    };
+    // componentWillUnmount() {
+    //     this._isMounted = false;
+    //   }
 
+    // apiRequest = (genres) => {
+    //      fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${genres}`)
+    //         .then((response) => response.json())
+    //         .then((responsesJson) =>{
+    //              this.setState({data: [...this.state.data, responsesJson.results],loading:false}) 
+    //         })
+    //         .catch((error) => console.error(error))
+    //         .finally(() => this.setState({ isLoading: false }))
+    // }
+
+    // handleMore = (genres) => {
+    //     this.setState({
+    //         page: this.state.page + 1
+    //     }, () => {
+    //         this.apiRequest(genres)
+    //     })
+    // }
 
     render() {
         const params = this.props.route.params
-        
 
         return (
             <View>
@@ -94,20 +116,13 @@ export default class Details extends Component {
                     <FlatList
                         numColumns={3}
                         data={this.state.data}
-                        keyExtractor={(item, index) => index.toString()}
-                        onEndReached={()=>{ this.handleMore()}}
-                        onEndReachedThreshold={0.5}
-                        // renderItem={this.ItemView}
-                        renderItem={({ item }) => {
-                            console.log('heyyyyyf theree fuck you')
-                            return (
-
-                                <BookCard title={item.title} />
-
-                            )
-                        }
+                        keyExtractor={({ id }, index) => id}
+                        onEndReached={this.handleMore(params.genres)}
+                        onEndReachedThreshold={200}
+                        renderItem={({ item }) => (
+                            <BookCard title={item.title} />
                             // <Text style={{ marginTop: 20 }}>{item.title}</Text>
-                        }
+                        )}
                     />
 
                 </View>

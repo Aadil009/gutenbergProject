@@ -12,7 +12,7 @@ const BookCard = (props) => {
                 source={{ uri: 'http://www.gutenberg.org/cache/epub/74/pg74.cover.medium.jpg' }}
             />
             <View style={{top:5}}>
-            <Text style={{fontSize:12}}>{props.title}</Text>
+            <Text numberOfLines={2} style={{fontSize:12,color:'black',flexWrap:'wrap'}}>{props.title}</Text>
             </View>
         </View>
     )
