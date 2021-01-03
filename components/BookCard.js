@@ -2,18 +2,24 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 
 const BookCard = (props) => {
-    const { uri, url, title, author } = props
+    const { uri, textFormat, htmlFormat, title, author } = props
     const { card, bookBanner, bookInfoView, bookName, authorName } = styles
-
+    console.log(htmlFormat)
     openeUrlInWebBrowser = () => {
-        if (!url) {
+        if (htmlFormat) {
+
+            Linking.openURL(htmlFormat)
+
+        }
+        else if (textFormat) {
+
+            Linking.openURL(textFormat)
+        }
+        else {
             return (Alert.alert(
                 "URL Not Found",
                 "Try Different Books",
             ))
-        }
-        else {
-            Linking.openURL(url)
         }
     }
 
