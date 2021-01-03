@@ -1,82 +1,71 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import GenreCard from './GenreCard';
-import Loader from './Loader'
-
-
-
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            genres: ['FICTION',
-                'DRAMA',
-                'HUMOR',
-                'POLITICS',
-                'PHILOSOPHY',
-                'HISTORY',
-                'ADVENTURES',
-            ],
-            loading: false,
-            isLoading: true,
-            data: [],
-            page: 1,
-
-        };
     }
-
-    apiRequest = async (genres) => {
-        // let tempGenres = genres
-        // await this.waitBeforeFetch(tempGenres),
-        console.log("***********************")
-        
-            this.props.navigation.navigate('Details', { genres: tempGenres, data: this.state.data })
-    }
-
-
-    waitBeforeFetch = async (tempGenres) => {
-        this.setstate({
-            loading: true
-        })
-        await fetch(`http://skunkworks.ignitesol.com:8000/books?search=${tempGenres}`)
-            .then((response) => response.json())
-            .then((responsesJson) => {
-                this.setState({ data: [...this.state.data, ...responsesJson.results],loading:false })
-                // setTimeout(() => {
-                //     this.setState({
-                //         loading: false,
-
-                //     });
-                // })
-            })
-            .catch((error) => console.error(error))
-            .finally(() => this.setState({ isLoading: false }))
-    }
-
 
     render() {
-        let GenreCards = this.state.genres.map((genres, key) => {
+        const genres = ['FICTION',
+            'DRAMA',
+            'HUMOR',
+            'POLITICS',
+            'PHILOSOPHY',
+            'HISTORY',
+            'ADVENTURES',
+        ];
+        const icons = ['flask',
+            'theater-masks',
+            'laugh-wink',
+            'male',
+            'palette',
+            'history',
+            'clock'
+        ]
+
+        const { container, header, body } = styles
+
+        let GenreCards = genres.map((genres, key) => {
             return (
-                <TouchableHighlight key={key} onPress={() => {
-                    
-                    // this.apiRequest(genres)
+                <TouchableOpacity style={{ top: 20 }} key={key} onPress={() => {
                     this.props.navigation.navigate('Details', { genres: genres })
                 }} >
-                    <GenreCard genres={genres} />
+                    <GenreCard genres={genres} icon={icons[key]} />
 
-                </TouchableHighlight>
+                </TouchableOpacity>
             )
         })
+
         return (
-            <View style={{ paddingLeft: 5, padding: 20, paddingTop: 20, backgroundColor: '#f8f7ff' }}>
-                <Loader loading={this.state.loading} />
-                <Text style={{ fontSize: 48, color: '#5E56E7' }}>Gutenberg Project</Text>
-                {/* <Text style={{ fontSize: 48, color: '#5E56E7' }}>Project</Text> */}
-                <Text style={{ fontSize: 22, color: 'black' }}>A social cataloging ewebsite that allows you to freely earch its database of books, annotations, and reviews.</Text>
+            <View style={container}>
+                <Text style={header}>Gutenberg Project</Text>
+                <Text style={body}>A social cataloging website that allows you to freely search its database of books, annotations, and reviews.</Text>
                 {GenreCards}
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        paddingLeft: 5,
+        paddingRight: 5,
+        padding: 20,
+        paddingTop: 10,
+        top: StatusBar.currentHeight,
+        backgroundColor: '#f8f7ff'
+    },
+    header: {
+        fontSize: 48,
+        fontFamily: 'Montserrat-SemiBold',
+        color: '#5E56E7'
+    },
+    body: {
+        fontSize: 16,
+        marginTop: 20,
+        color: 'black',
+        fontFamily: 'Montserrat-SemiBold'
+    }
+})

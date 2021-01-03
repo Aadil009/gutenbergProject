@@ -1,33 +1,31 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 
-// import { Container } from './styles';
-
 const BookCard = (props) => {
-    const url = props.url
+    const { uri, url, title, author } = props
+    const { card, bookBanner, bookInfoView, bookName, authorName } = styles
 
-    openeUrlInWebBrowser= ()=>{
-        if(!url){
+    openeUrlInWebBrowser = () => {
+        if (!url) {
             return (Alert.alert(
                 "URL Not Found",
                 "Try Different Books",
-              ))
+            ))
         }
-        else{
+        else {
             Linking.openURL(url)
         }
     }
-    
+
     return (
-        <TouchableOpacity style={styles.card} onPress={openeUrlInWebBrowser} >
-            
+        <TouchableOpacity style={card} onPress={openeUrlInWebBrowser} >
             <Image
-            style={{height:100,width:80,borderRadius:8,top:5}}
-                source={{ uri: props.uri }}
+                style={bookBanner}
+                source={{ uri: uri }}
             />
-            <View style={{top:5}}>
-            <Text numberOfLines={2} style={{fontSize:12,color:'black',flexWrap:'wrap'}}>{props.title}</Text>
-            <Text numberOfLines={2} style={{fontSize:12,color:'black',flexWrap:'wrap'}}>{props.author}</Text>
+            <View style={bookInfoView}>
+                <Text numberOfLines={2} style={bookName}>{title}</Text>
+                <Text numberOfLines={1} style={authorName}>{author}</Text>
 
             </View>
         </TouchableOpacity>
@@ -36,13 +34,12 @@ const BookCard = (props) => {
 
 const styles = StyleSheet.create({
     card: {
-        
+        margin: 1,
         width: 114,
         height: 162,
         borderRadius: 8,
-        backgroundColor:'#f8f7ff',
-        alignItems:'center',
-        // justifyContent:'center',
+        backgroundColor: '#f8f7ff',
+        alignItems: 'center',
         shadowColor: 'rgba(211,209,238,0.5)',
         shadowOffset: {
             width: 0,
@@ -50,7 +47,31 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0,
         shadowRadius: 1,
-        elevation: 0,
+        elevation: 2,
+    },
+    bookBanner: {
+        height: 100,
+        width: 80,
+        borderRadius: 8,
+        top: 5
+    },
+    bookInfoView: {
+        top: 5
+    },
+    bookName: {
+        fontSize: 12,
+        marginLeft: 5,
+        marginRight: 2,
+        fontFamily: 'Montserrat-SemiBold',
+        color: 'black',
+    },
+    authorName: {
+        fontSize: 12,
+        marginLeft: 5,
+        marginRight: 2,
+        color: 'black',
+        fontFamily: 'Montserrat-Regular',
     }
+
 })
 export default BookCard;

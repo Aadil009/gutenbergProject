@@ -1,3 +1,8 @@
+
+//This is temporary file just to remember the latest modification
+//ignore this file 
+//Now go Back :)
+
 import { GestureHandlerRefContext } from '@react-navigation/stack';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
@@ -5,145 +10,82 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import BookCard from './BookCard';
 import Loader from './Loader'
-// ******************************************
-// *********************************************
-// **************************************
+
 export default class Details extends Component {
-    
-    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
             text: '',
             page: 1,
-            data:[],
-            isLoading:true,
+            data: [],
+            isLoading: true,
             loading: false,
+            next: ''
 
         };
     }
-    componentDidMount(){
-        
-        this.apiRequest(this.props.route.params.genres)
+    componentDidMount() {
+        this.apiRequest()
     }
-    apiRequest = async(genres)=>{
-        const response = await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${1}&search=${genres}`)
-        const json  = await response.json();
-        console.log('HEREE IS SOMETHING GOING WRONG')
-        this.setState({data: [...this.state.data, responsesJson.results],loading:false,isLoading:false}) 
-        // await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${genres}`)
-        //     .then((response) => response.json())
-        //     .then((responsesJson) =>{
-        //         console.log("hellowtherej*****************8")
-        //          this.setState({data: [...this.state.data, responsesJson.results],loading:false}) 
-        //     })
-        //     .catch((error) => console.error(error))
-        //     .finally(() => this.setState({ isLoading: false }))
+    apiRequest = async () => {
+        try {
+            const response = await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${this.props.route.params.genres}&mime_type=image`)
+            const json = await response.json();
+            this.setState({ data: [...this.state.data, ...json.results] })
+        }
+        catch (err) {
+            console.log(err)
+        }
+
     }
 
-    handleMore = (genres) => {
-        this.setState({
+    handleMore = async () => {
+        await this.setState({
             page: this.state.page + 1
         }, () => {
-            this.apiRequest(genres)
+            this.apiRequest()
         })
     }
-    // componentDidMount() {
-    //     this._isMounted = true;
-      
-    //     fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${this.props.route.params.genres}`)
-    //         .then((response) => response.json())
-    //         .then((responsesJson) =>{
-    //             if(this._isMounted){
-    //              this.setState({data: [...this.state.data, responsesJson.results],loading:false}) 
-    //         }})
-    //         .catch((error) => console.error(error))
-          
-        
-    //   }
-    // // componentDidMount(){
-    // //     this.setState({
-    // //         data:this.props.route.params.data
-    // //     })
-    // // }
-
-    // componentWillUnmount() {
-    //     this._isMounted = false;
-    //   }
-
-    // apiRequest = (genres) => {
-    //      fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${genres}`)
-    //         .then((response) => response.json())
-    //         .then((responsesJson) =>{
-    //              this.setState({data: [...this.state.data, responsesJson.results],loading:false}) 
-    //         })
-    //         .catch((error) => console.error(error))
-    //         .finally(() => this.setState({ isLoading: false }))
-    // }
-
-    // handleMore = (genres) => {
-    //     this.setState({
-    //         page: this.state.page + 1
-    //     }, () => {
-    //         this.apiRequest(genres)
-    //     })
-    // }
 
     render() {
+
         const params = this.props.route.params
 
         return (
             <View>
-                <Loader loading={this.state.loading} />
                 <View style={{ height: 40, top: 10, paddingLeft: 10, paddingRight: 10, borderRadius: 4, backgroundColor: '#f8f7ff', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
                     <Ionicons style={styles.searchIcon} name="search-outline" size={20} color="green" />
                     <TextInput
                         placeholder='Search'
-                        autoFocus
                         style={styles.serchBar}
                         value={this.state.text}
                         onChangeText={(text) => this.setState({ text: text })}
                         blurOnSubmit={false}
-
-                        onSubmitEditing={() => {
-                            { this.getData(this.state.text) }
-
-                        }}
+                    // onSubmitEditing={() => {
+                    //     { this.getData(this.state.text) }
+                    // }}
 
                     />
                 </View>
-                <View style={{ top: 30, flexWrap: 'wrap' }}>
+                <Loader loading={this.state.loading} />
+                <View style={{ top: 30, padding: 10, flexWrap: 'wrap' }}>
                     <FlatList
+                        contentContainerStyle={{ paddingBottom: 120 }}
                         numColumns={3}
                         data={this.state.data}
-                        keyExtractor={({ id }, index) => id}
-                        onEndReached={this.handleMore(params.genres)}
-                        onEndReachedThreshold={200}
-                        renderItem={({ item }) => (
-                            <BookCard title={item.title} />
-                            // <Text style={{ marginTop: 20 }}>{item.title}</Text>
-                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                        onEndReached={() => { this.handleMore() }}
+                        onEndReachedThreshold={0.5}
+                        renderItem={({ item }) => {
+                            return (
+                                <BookCard title={item.title} author={item.authors['name']} uri={item.formats['image/jpeg']} url={item.formats['text/plain']} />
+                            )
+                        }
+                        }
                     />
 
                 </View>
-                {/* <View style={styles.searchSection}>
-                <Ionicons style={{padding:10}} name="search-outline" size={20} color="green" />
-                    <TextInput
-                    placeholder='Search'
-                    autoFocus
-                    style={styles.serchBar}
-                    value={this.state.text}
-                    onChangeText = {(text) =>this.setState({text:text})}
-                    blurOnSubmit={false}
-
-                    onSubmitEditing={()=>{
-                        {this.getData(this.state.text)}
-                    
-                    }}
-                    
-                    />
-                </View> */}
-
             </View>
         );
     }
@@ -151,12 +93,6 @@ export default class Details extends Component {
 
 const styles = StyleSheet.create({
     serchBar: {
-        // height:40,
-        // paddingRight:10,
-        // paddingLeft:10,
-        // borderWidth:1,
-        // borderRadius:4,
-        // backgroundColor:'#f8f7ff'
         flex: 1,
 
         borderRadius: 4,
