@@ -67,12 +67,12 @@ export default class Details extends Component {
         const params = this.props.route.params
 
         return (
-            <View style={{top:StatusBar.currentHeight}}>
+            <View style={{top:StatusBar.currentHeight, backgroundColor:'#f8f7ff'}}>
                 <View style={{ height: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <Text style={{ fontSize: 30, marginLeft: 30, fontFamily: 'Montserrat-SemiBold', color: '#5e56e7' }}>{this.props.route.params.genres}</Text>
 
                 </View>
-                <View style={{ height: 40, top: 10, paddingLeft: 10, paddingRight: 10, borderRadius: 4, backgroundColor: '#f8f7ff', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ height: 40, top: 10, paddingLeft: 10, paddingRight: 10, borderRadius: 4, backgroundColor: '#a0a0a0', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center', marginLeft:8,marginRight:10 }}>
                     <Ionicons style={styles.searchIcon} name="search-outline" size={20} color="green" />
                     <TextInput
                         // autoFocus={true}
@@ -118,12 +118,12 @@ export default class Details extends Component {
 const styles = StyleSheet.create({
     serchBar: {
         flex: 1,
-
+        fontFamily:'Montserrat-SemiBold',
         borderRadius: 4,
         paddingRight: 10,
         paddingLeft: 10,
         height: 40,
-        backgroundColor: '#f8f7ff',
+        backgroundColor: '#a0a0a0',
         color: '#424242',
     },
     searchSection: {
@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f8f7ff',
+        backgroundColor: '#a0a0a0',
     },
     searchIcon: {
-        backgroundColor: '#f8f7ff'
+        backgroundColor: '#a0a0a0'
     }
 })

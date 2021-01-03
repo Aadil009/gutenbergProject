@@ -2,20 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-// import { Ionicons } from '@expo/vector-icons';
-// import { Container } from './styles';
-
 
 const GenreCard = (props) => {
     const { container, cardContainer, genreText } = styles
-    console.log(props.icon)
     return (
         <View style={container}>
             <View style={cardContainer}>
-                <Icon name={props.icon} size={32} color="green" />
+                <Icon name={props.icon} size={20} color="#5e56e7" />
                 <Text style={genreText}>{props.genres}</Text>
             </View>
-            <Ionicons name="arrow-forward-outline" size={32} color="green" />
+            <Ionicons name="arrow-forward-outline" size={32} color="#5e56e7" />
         </View>
     );
 }
@@ -38,7 +34,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 15,
-        backgroundColor: 'white'
+        backgroundColor: '#f8f7ff'
     },
     cardContainer: {
         flexDirection: 'row',
