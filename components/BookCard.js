@@ -4,7 +4,6 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Linking, Alert } from 
 const BookCard = (props) => {
     const { uri, textFormat, htmlFormat, title, author } = props
     const { card, bookBanner, bookInfoView, bookName, authorName } = styles
-    console.log(htmlFormat)
     openeUrlInWebBrowser = () => {
         if (htmlFormat) {
 

@@ -26,9 +26,10 @@ export default class Details extends Component {
     apiRequest = async () => {
         this.setState({ loading: true })
         try {
-            const response = await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&subject=${this.props.route.params.genres}&mime_type=image`)
+            const response = await fetch(`http://skunkworks.ignitesol.com:8000/books/?page=${this.state.page}&search=${this.props.route.params.genres}&mime_type=image`)
             const json = await response.json();
             this.setState({ data: [...this.state.data, ...json.results], loading: false, isLoading: false })
+            
 
         }
         catch (err) {
@@ -85,7 +86,7 @@ export default class Details extends Component {
                 <View style={searchContainer}>
                     <Ionicons style={searchIcon} name="search-outline" size={20} color="green" />
                     <TextInput
-                        // autoFocus={true}
+                        autoFocus={true}
                         placeholder='Search'
                         style={searchBar}
                         onChangeText={text => this.searchFilterFunction(text)}
@@ -100,7 +101,7 @@ export default class Details extends Component {
 
                     />
                 </View>
-                {this.state.isLoading ? (<ActivityIndicator size={50} color='black' style={{ top: StatusBar.currentHeight + 100 }} />) : (
+                {this.state.isLoading ? (<ActivityIndicator size={50} color='#5e56e7' style={{ top: StatusBar.currentHeight + 100 }} />) : (
                     <View style={flastListContainer}>
                         <FlatList
                             contentContainerStyle={{ marginBottom: 120 }}
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 30,
-        marginLeft: 30,
+        marginLeft: 10,
         fontFamily: 'Montserrat-SemiBold',
         color: '#5e56e7'
     },
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
     flastListContainer: {
         top: 20,
         padding: 5,
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        paddingBottom:220
     }
 })
