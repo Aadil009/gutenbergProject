@@ -13,7 +13,7 @@ Project Guttenberg is a library of over 60,000 free eBooks.
 1. Search for the books by their author/ title etc.
 1. Tap on any book if you want to read them
 1. You will redirected to your default browser where you can read them online
-1. In case if there is no url for plain text or html format for the perticular books you will see a alert box saying try different books
+1. In case if there is no url for plain text or html format for the perticular books you will see an alert box saying try different books
 
 ## How to search
 1. Search book title or Author name in ant genre you will see the results according to the search results of selected genre.
